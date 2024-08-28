@@ -2,9 +2,9 @@
 
 namespace OpenTkUnit.Core.Drawable;
 
-public class CompositeDrawableObject : IDrawable
+public class DrawableObject : IDrawable
 {
-    public readonly Dictionary<string, IDrawable> _parts = new();
+    public readonly Dictionary<string, DrawablePart> _parts = new();
 
     private Vector3 _centerOfMass = Vector3.Zero;
     private Vector3 _position = Vector3.Zero;
@@ -14,7 +14,12 @@ public class CompositeDrawableObject : IDrawable
 
 
 
-    public CompositeDrawableObject(Vector3 position, Dictionary<string, IDrawable> parts)
+    public DrawableObject(Vector3? position = null)
+    {
+        _position = position ?? _position;
+    }
+
+    public DrawableObject(Vector3 position, Dictionary<string, DrawablePart> parts)
     {
         _position = position;
         _parts = parts;
