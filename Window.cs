@@ -2,7 +2,7 @@
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using OpenTkUnit.Core.Drawable;
+using OpenTkUnit.Core;
 using OpenTkUnit.Shapes;
 
 namespace OpenTkUnit;
@@ -10,12 +10,14 @@ namespace OpenTkUnit;
 public class Window : GameWindow
 {
 
-    private readonly IDrawable _object;
+    private readonly Scene _letters;
     private Matrix4 _viewProjectionMatrix;
     private Matrix4 _projectionMatrix;
     public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
     {
-        _object = new FirstDraw();
+        var letterT = new LetterT(Vector3.Zero);
+        _letters = new Scene();
+        _letters.AddObject("letter-T", letterT);
     }
 
     protected void CreateViewProjectionMatrix()
@@ -36,7 +38,7 @@ public class Window : GameWindow
     {
         GL.ClearColor(0.12f, 0.32f, 0.2f, 1.0f);
         _projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), Size.X / Size.Y, 1.0f, 100.0f);
-        _object.Build();
+        _letters.Build();
         base.OnLoad();
     }
 
@@ -48,7 +50,7 @@ public class Window : GameWindow
 
         CreateViewProjectionMatrix();
 
-        _object.Draw(_viewProjectionMatrix);
+        _letters.Draw(_viewProjectionMatrix);
         SwapBuffers();
         base.OnRenderFrame(args);
     }
@@ -63,7 +65,7 @@ public class Window : GameWindow
 
     protected override void OnUnload()
     {
-        _object.Destroy();
+        _letters.Destroy();
         base.OnUnload();
     }
 }
